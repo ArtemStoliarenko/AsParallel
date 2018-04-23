@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AsParallel
 {
-	public sealed class AsParallel : IOutputDataReceiver, ICloneable, IDisposable
+	public sealed class ProcessRunner : IOutputDataReceiver, ICloneable, IDisposable
     {
 		private readonly ProcessCreator processCreator;
 
@@ -31,14 +31,14 @@ namespace AsParallel
 		public string CombinedOutput { get => combinedOutput.ToString(); }
 		public event EventHandler<string> CombinedOutputChanged;
 
-		public AsParallel(string filename, string argument, int processCount, bool isLongRunning = false, bool showWindow = false)
+		public ProcessRunner(string filename, string argument, int processCount, bool isLongRunning = false, bool showWindow = false)
 			: this(filename, Enumerable.Repeat(argument, processCount).ToArray(), isLongRunning, showWindow)
 		{
 			if (processCount <= 0)
 				throw new ArgumentOutOfRangeException(nameof(processCount));
 		}
 
-		public AsParallel(string filename, IList<string> arguments, bool isLongRunning = false, bool showWindow = false)
+		public ProcessRunner(string filename, IList<string> arguments, bool isLongRunning = false, bool showWindow = false)
 		{
 			this.processCreator = new ProcessCreator(filename, arguments, showWindow);
 			this.IsLongRunning = isLongRunning;
@@ -52,7 +52,7 @@ namespace AsParallel
 		public Task<RunResults> StartAsync()
 		{
 			if (disposed)
-				throw new ObjectDisposedException(nameof(AsParallel));
+				throw new ObjectDisposedException(nameof(ProcessRunner));
 
 			lock (locker)
 			{
@@ -66,14 +66,14 @@ namespace AsParallel
 				}
 				else
 				{
-					throw new InvalidOperationException(nameof(AsParallel));
+					throw new InvalidOperationException(nameof(ProcessRunner));
 				}
 			}
 		}
 
-		public AsParallel Clone()
+		public ProcessRunner Clone()
 		{
-			return new AsParallel(processCreator.Clone(), IsLongRunning);
+			return new ProcessRunner(processCreator.Clone(), IsLongRunning);
 		}
 
 		object ICloneable.Clone() => Clone();
@@ -131,7 +131,7 @@ namespace AsParallel
 			return tcs.Task;
 		}
 
-		private AsParallel(ProcessCreator processCreator, bool isLongRunning)
+		private ProcessRunner(ProcessCreator processCreator, bool isLongRunning)
 		{
 			this.processCreator = processCreator;
 			this.IsLongRunning = isLongRunning;
