@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AsParallel
 {
 	public sealed class ProcessRunner : IOutputDataReceiver, ICloneable, IDisposable
-    {
+	{
 		private readonly ProcessCreator processCreator;
 
 		private readonly object locker = new object();
@@ -16,7 +16,7 @@ namespace AsParallel
 		private bool disposed = false;
 
 		public bool IsLongRunning { get; }
-		
+
 		public Task<RunResults> CurrentTask { get; private set; }
 
 		private readonly StringBuilder output = new StringBuilder();
@@ -48,7 +48,7 @@ namespace AsParallel
 		{
 			return StartAsync().Result;
 		}
-		
+
 		public Task<RunResults> StartAsync()
 		{
 			if (disposed)
@@ -89,7 +89,7 @@ namespace AsParallel
 
 		public void AddToOutput(object sender, DataReceivedEventArgs e)
 		{
-			lock(locker)
+			lock (locker)
 			{
 				output.AppendLine(e.Data);
 				combinedOutput.AppendLine(e.Data);
@@ -101,7 +101,7 @@ namespace AsParallel
 
 		public void AddToError(object sender, DataReceivedEventArgs e)
 		{
-			lock(locker)
+			lock (locker)
 			{
 				error.AppendLine(e.Data);
 				combinedOutput.AppendLine(e.Data);

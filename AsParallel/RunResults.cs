@@ -1,7 +1,7 @@
 ﻿namespace AsParallel
 {
 	public sealed class RunResults
-    {
+	{
 		public string Output { get; }
 
 		public string Error { get; }
@@ -14,5 +14,5 @@
 			this.Error = error;
 			this.CombinedOutput = combinedOutput;
 		}
-    }
+	}
 }
