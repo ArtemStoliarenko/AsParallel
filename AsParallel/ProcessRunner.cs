@@ -29,14 +29,14 @@ namespace AsParallel
 		public string CombinedOutput { get => combinedOutput.ToString(); }
 		public event EventHandler<string> CombinedOutputChanged;
 
-		public ProcessRunner(string filename, string argument, int processCount, bool isLongRunning = false, bool showWindow = false)
-			: this(filename, Enumerable.Repeat(argument, processCount).ToArray(), isLongRunning, showWindow)
+		public ProcessRunner(string filename, string argument, int processCount, bool showWindow = false)
+			: this(filename, Enumerable.Repeat(argument, processCount).ToArray(), showWindow)
 		{
 			if (processCount <= 0)
 				throw new ArgumentOutOfRangeException(nameof(processCount));
 		}
 
-		public ProcessRunner(string filename, IList<string> arguments, bool isLongRunning = false, bool showWindow = false)
+		public ProcessRunner(string filename, IList<string> arguments, bool showWindow = false)
 		{
 			this.processCreator = new ProcessCreator(filename, arguments, showWindow);
 		}
