@@ -15,8 +15,6 @@ namespace AsParallel
 
 		private bool disposed = false;
 
-		public bool IsLongRunning { get; }
-
 		public Task<RunResults> CurrentTask { get; private set; }
 
 		private readonly StringBuilder output = new StringBuilder();
@@ -41,7 +39,6 @@ namespace AsParallel
 		public ProcessRunner(string filename, IList<string> arguments, bool isLongRunning = false, bool showWindow = false)
 		{
 			this.processCreator = new ProcessCreator(filename, arguments, showWindow);
-			this.IsLongRunning = isLongRunning;
 		}
 
 		public RunResults Start()
@@ -73,7 +70,7 @@ namespace AsParallel
 
 		public ProcessRunner Clone()
 		{
-			return new ProcessRunner(processCreator.Clone(), IsLongRunning);
+			return new ProcessRunner(processCreator.Clone());
 		}
 
 		object ICloneable.Clone() => Clone();
@@ -131,10 +128,9 @@ namespace AsParallel
 			return tcs.Task;
 		}
 
-		private ProcessRunner(ProcessCreator processCreator, bool isLongRunning)
+		private ProcessRunner(ProcessCreator processCreator)
 		{
 			this.processCreator = processCreator;
-			this.IsLongRunning = isLongRunning;
 		}
 	}
 }
