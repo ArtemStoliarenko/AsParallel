@@ -84,7 +84,7 @@ namespace AsParallel
 			}
 		}
 
-		public void AddToOutput(object sender, DataReceivedEventArgs e)
+		void IOutputDataReceiver.AddToOutput(object sender, DataReceivedEventArgs e)
 		{
 			lock (locker)
 			{
@@ -96,7 +96,7 @@ namespace AsParallel
 			}
 		}
 
-		public void AddToError(object sender, DataReceivedEventArgs e)
+		void IOutputDataReceiver.AddToError(object sender, DataReceivedEventArgs e)
 		{
 			lock (locker)
 			{
