@@ -1,4 +1,6 @@
-﻿namespace AsParallel
+﻿using System;
+
+namespace AsParallel
 {
 	public sealed class LastLineMessageFormatter : IMessageFormatter
 	{
@@ -20,6 +22,8 @@
 			CombinedOutput = message;
 		}
 
+		public RunResults GetRunResults() => new RunResults(Output, Error, CombinedOutput);
+
 		public void Clear()
 		{
 			Output = string.Empty;
@@ -27,6 +31,6 @@
 			CombinedOutput = string.Empty;
 		}
 
-		object Clone() => new LastLineMessageFormatter();
+		object ICloneable.Clone() => new LastLineMessageFormatter();
 	}
 }

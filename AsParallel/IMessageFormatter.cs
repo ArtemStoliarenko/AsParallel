@@ -23,6 +23,8 @@ namespace AsParallel
 
 		void AddToError(string message);
 
+		RunResults GetRunResults();
+
 		void Clear();
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace AsParallel
 {
@@ -26,6 +27,8 @@ namespace AsParallel
 			combinedStringBuilder.AppendLine(message);
 		}
 
+		public RunResults GetRunResults() => new RunResults(Output, Error, CombinedOutput);
+
 		public void Clear()
 		{
 			outputStringBuilder.Clear();
@@ -33,6 +36,6 @@ namespace AsParallel
 			combinedStringBuilder.Clear();
 		}
 
-		object Clone() => new AppendLineMessageFormatter();
+		object ICloneable.Clone() => new AppendLineMessageFormatter();
 	}
 }

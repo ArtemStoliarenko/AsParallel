@@ -161,7 +161,7 @@ namespace AsParallel
 					var ctrCancellationToken = new CancellationTokenSource();
 					var outputDataReceiverTask = concurrentDataReceiver.Run(ctrCancellationToken.Token);
 
-					CurrentTask = Task.WhenAll(tasks).ContinueWith(task => new RunResults(Output, Error, CombinedOutput));
+					CurrentTask = Task.WhenAll(tasks).ContinueWith(task => messageFormatter.GetRunResults());
 					outputDataReceiverTask.ContinueWith(task => ctrCancellationToken.Dispose());
 
 					return CurrentTask;
