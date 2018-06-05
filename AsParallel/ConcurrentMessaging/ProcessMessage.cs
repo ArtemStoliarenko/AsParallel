@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AsParallel.ConcurrentMessaging
 {
-    sealed class ProcessMessage
-    {
+	sealed class ProcessMessage
+	{
 		public MessageType MessageType { get; }
 
 		public string Message { get; }
@@ -21,5 +19,5 @@ namespace AsParallel.ConcurrentMessaging
 			this.MessageType = messageType;
 			this.Message = message;
 		}
-    }
+	}
 }

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AsParallel.ConcurrentMessaging
+﻿namespace AsParallel.ConcurrentMessaging
 {
-    interface IMessageSender
-    {
+	interface IMessageSender
+	{
 		void SendOutputMessage(string message);
 
 		void SendErrorMessage(string message);
-    }
+	}
 }

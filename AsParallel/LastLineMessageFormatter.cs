@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AsParallel
+﻿namespace AsParallel
 {
 	public sealed class LastLineMessageFormatter : IMessageFormatter
 	{

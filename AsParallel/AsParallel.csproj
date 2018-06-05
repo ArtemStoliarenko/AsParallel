@@ -12,8 +12,4 @@
     <PackageTags>process,.net standard,AsParallel</PackageTags>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
-  </PropertyGroup>
-
 </Project>

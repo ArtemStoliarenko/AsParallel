@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AsParallel
 {
-    public interface IMessageFormatter : ICloneable
-    {
+	public interface IMessageFormatter : ICloneable
+	{
 		/// <summary>
 		/// Current standard output of the running processes.
 		/// </summary>
@@ -26,5 +24,5 @@ namespace AsParallel
 		void AddToError(string message);
 
 		void Clear();
-    }
+	}
 }
