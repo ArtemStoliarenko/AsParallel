@@ -2,7 +2,7 @@
 
 namespace AsParallel
 {
-	public sealed class LastLineMessageFormatter : IMessageFormatter
+	sealed class LastLineMessageFormatter : IMessageFormatter
 	{
 		public string Output { get; private set; } = string.Empty;
 

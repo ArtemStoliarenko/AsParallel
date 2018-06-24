@@ -3,7 +3,7 @@ using System.Text;
 
 namespace AsParallel
 {
-	public sealed class AppendLineMessageFormatter : IMessageFormatter
+	sealed class AppendLineMessageFormatter : IMessageFormatter
 	{
 		private readonly StringBuilder outputStringBuilder = new StringBuilder();
 		private readonly StringBuilder errorStringBuilder = new StringBuilder();

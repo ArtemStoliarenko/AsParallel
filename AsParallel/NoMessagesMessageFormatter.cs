@@ -2,7 +2,7 @@
 
 namespace AsParallel
 {
-	public class NoMessagesMessageFormatter : IMessageFormatter
+	sealed class NoMessagesMessageFormatter : IMessageFormatter
 	{
 		public string Output => string.Empty;
 

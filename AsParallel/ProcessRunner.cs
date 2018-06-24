@@ -47,41 +47,9 @@ namespace AsParallel
 		/// <param name="filename">Filename of the executable to be run.</param>
 		/// <param name="argument">Argument to launch executables with.</param>
 		/// <param name="processCount">Amount of processes to be executed simultaneously.</param>
-		public ProcessRunner(string filename, string argument, int processCount)
-			: this(filename, argument, processCount, false, new AppendLineMessageFormatter())
-		{ }
-
-		/// <summary>
-		/// Initializes a new instance of <see cref="ProcessRunner"/>.
-		/// </summary>
-		/// <param name="filename">Filename of the executable to be run.</param>
-		/// <param name="argument">Argument to launch executables with.</param>
-		/// <param name="processCount">Amount of processes to be executed simultaneously.</param>
-		/// <param name="showWindow">True if a new window should be created for every process instance; otherwise, false.</param>
-		public ProcessRunner(string filename, string argument, int processCount, bool showWindow)
-			: this(filename, argument, processCount, showWindow, new AppendLineMessageFormatter())
-		{ }
-
-		/// <summary>
-		/// Initializes a new instance of <see cref="ProcessRunner"/>.
-		/// </summary>
-		/// <param name="filename">Filename of the executable to be run.</param>
-		/// <param name="argument">Argument to launch executables with.</param>
-		/// <param name="processCount">Amount of processes to be executed simultaneously.</param>
-		/// <param name="messageFormatter"><see cref="IMessageFormatter"/> instance which defines output format.</param>
-		public ProcessRunner(string filename, string argument, int processCount, IMessageFormatter messageFormatter)
-			: this(filename, argument, processCount, false, messageFormatter)
-		{ }
-
-		/// <summary>
-		/// Initializes a new instance of <see cref="ProcessRunner"/>.
-		/// </summary>
-		/// <param name="filename">Filename of the executable to be run.</param>
-		/// <param name="argument">Argument to launch executables with.</param>
-		/// <param name="processCount">Amount of processes to be executed simultaneously.</param>
 		/// <param name="showWindow">True if a new window should be created for every process instance; otherwise, false.</param>
 		/// <param name="messageFormatter"><see cref="IMessageFormatter"/> instance which defines output format.</param>
-		public ProcessRunner(string filename, string argument, int processCount, bool showWindow, IMessageFormatter messageFormatter)
+		public ProcessRunner(string filename, string argument, int processCount, bool showWindow = false, IMessageFormatter messageFormatter = null)
 			: this(filename, Enumerable.Repeat(argument, processCount).ToArray(), showWindow, messageFormatter)
 		{
 			if (processCount <= 0)
@@ -93,44 +61,12 @@ namespace AsParallel
 		/// </summary>
 		/// <param name="filename">Filename of the executable to be run.</param>
 		/// <param name="arguments">Argument to launch executables with.</param>
-		public ProcessRunner(string filename, IList<string> arguments)
-			: this(filename, arguments, false, new AppendLineMessageFormatter())
-		{ }
-
-		/// <summary>
-		/// Initializes a new instance of <see cref="ProcessRunner"/>.
-		/// </summary>
-		/// <param name="filename">Filename of the executable to be run.</param>
-		/// <param name="arguments">Argument to launch executables with.</param>
-		/// <param name="showWindow">True if a new window should be created for every process instance; otherwise, false.</param>
-		public ProcessRunner(string filename, IList<string> arguments, bool showWindow)
-			: this(filename, arguments, showWindow, new AppendLineMessageFormatter())
-		{ }
-
-		/// <summary>
-		/// Initializes a new instance of <see cref="ProcessRunner"/>.
-		/// </summary>
-		/// <param name="filename">Filename of the executable to be run.</param>
-		/// <param name="arguments">Argument to launch executables with.</param>
-		/// <param name="messageFormatter"><see cref="IMessageFormatter"/> instance which defines output format.</param>
-		public ProcessRunner(string filename, IList<string> arguments, IMessageFormatter messageFormatter)
-			: this(filename, arguments, false, messageFormatter)
-		{ }
-
-		/// <summary>
-		/// Initializes a new instance of <see cref="ProcessRunner"/>.
-		/// </summary>
-		/// <param name="filename">Filename of the executable to be run.</param>
-		/// <param name="arguments">Argument to launch executables with.</param>
 		/// <param name="showWindow">True if a new window should be created for every process instance; otherwise, false.</param>
 		/// <param name="messageFormatter"><see cref="IMessageFormatter"/> instance which defines output format. Default is <see cref="AppendLineMessageFormatter"/>.</param>
-		public ProcessRunner(string filename, IList<string> arguments, bool showWindow, IMessageFormatter messageFormatter)
+		public ProcessRunner(string filename, IList<string> arguments, bool showWindow = false, IMessageFormatter messageFormatter = null)
 		{
 			this.processCreator = new ProcessCreator(filename, arguments, showWindow);
-
-			if (messageFormatter == null)
-				throw new ArgumentNullException(nameof(messageFormatter));
-			this.messageFormatter = messageFormatter;
+			this.messageFormatter = messageFormatter ?? MessageFormatter.NoMessages;
 		}
 
 		/// <summary>
