@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AsParallel.ConcurrentMessaging;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -58,9 +59,9 @@ namespace AsParallel
 		/// <summary>
 		/// Creates a collection of processes to be executed.
 		/// </summary>
-		/// <param name="outputDataReceiver"><see cref="IOutputDataReceiver"/> to handle process output.</param>
+		/// <param name="concurrentDataReceiver"><see cref="ConcurrentDataReceiver"/> to handle process output.</param>
 		/// <returns>Created collection of processes.</returns>
-		public ReadOnlyCollection<Process> CreateProcesses(IOutputDataReceiver outputDataReceiver = null)
+		public ReadOnlyCollection<Process> CreateProcesses(ConcurrentDataReceiver concurrentDataReceiver = null)
 		{
 			if (disposed)
 				throw new ObjectDisposedException(nameof(ProcessCreator));
@@ -71,14 +72,14 @@ namespace AsParallel
 			var processWindowStyle = ShowWindow ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
 			foreach (string arguments in Arguments)
 			{
-				var process = CreateProcess(arguments, processWindowStyle, outputDataReceiver);
+				var process = CreateProcess(arguments, processWindowStyle, concurrentDataReceiver);
 				processList.Add(process);
 			}
 
 			return new ReadOnlyCollection<Process>(processList);
 		}
 
-		private Process CreateProcess(string arguments, ProcessWindowStyle processWindowStyle, IOutputDataReceiver outputDataReceiver)
+		private Process CreateProcess(string arguments, ProcessWindowStyle processWindowStyle, ConcurrentDataReceiver concurrentDataReceiver)
 		{
 			var process = new Process();
 
@@ -86,13 +87,15 @@ namespace AsParallel
 			process.StartInfo.Arguments = arguments;
 			process.StartInfo.UseShellExecute = false;
 			process.StartInfo.WindowStyle = processWindowStyle;
-			if (outputDataReceiver != null)
+
+			if (concurrentDataReceiver != null)
 			{
 				process.StartInfo.RedirectStandardOutput = true;
 				process.StartInfo.RedirectStandardError = true;
-				process.OutputDataReceived += outputDataReceiver.AddToOutput;
-				process.ErrorDataReceived += outputDataReceiver.AddToError;
+				process.OutputDataReceived += concurrentDataReceiver.AddToOutput;
+				process.ErrorDataReceived += concurrentDataReceiver.AddToError;
 			}
+
 			process.EnableRaisingEvents = true;
 
 			return process;

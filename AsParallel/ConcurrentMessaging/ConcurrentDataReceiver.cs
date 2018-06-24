@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AsParallel.ConcurrentMessaging
 {
-	sealed class ConcurrentDataReceiver : IOutputDataReceiver
+	sealed class ConcurrentDataReceiver
 	{
 		private const int threadSleepInterval = 100;
 
@@ -24,7 +24,7 @@ namespace AsParallel.ConcurrentMessaging
 
 		public Task Run(CancellationToken cancellationToken)
 		{
-			return Task.Factory.StartNew(() => ProcessQueue(cancellationToken), cancellationToken, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+			return Task.Factory.StartNew(() => ProcessQueue(cancellationToken), TaskCreationOptions.LongRunning);
 		}
 
 		public void AddToError(object sender, DataReceivedEventArgs e)

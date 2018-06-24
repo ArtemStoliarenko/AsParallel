@@ -2,7 +2,7 @@
 
 namespace AsParallel.ConcurrentMessaging
 {
-	sealed class ProcessMessage
+	struct ProcessMessage
 	{
 		public MessageType MessageType { get; }
 
@@ -10,8 +10,8 @@ namespace AsParallel.ConcurrentMessaging
 
 		public ProcessMessage(MessageType messageType, string message)
 		{
-			if (MessageType == MessageType.None)
-				throw new ArgumentOutOfRangeException(nameof(MessageType));
+			if (messageType == MessageType.None)
+				throw new ArgumentOutOfRangeException(nameof(messageType));
 
 			if (message == null)
 				throw new ArgumentNullException(nameof(message));
