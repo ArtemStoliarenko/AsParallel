@@ -1,7 +1,7 @@
 ﻿namespace AsParallel
 {
 	/// <summary>
-	/// Incaplsulates the results of the process execution.
+	/// Encaplsulates the results of the process execution.
 	/// </summary>
 	public sealed class RunResults
 	{

@@ -8,7 +8,7 @@ using System.Linq;
 namespace AsParallel
 {
 	/// <summary>
-	/// Incaplsulates process set creation.
+	/// Encaplsulates process set creation.
 	/// </summary>
 	sealed class ProcessCreator : ICloneable, IDisposable
 	{
