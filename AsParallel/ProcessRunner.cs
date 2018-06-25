@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AsParallel
 {
 	/// <summary>
-	/// Incapsulates parallel process running logic.
+	/// Encapsulates parallel process running logic.
 	/// </summary>
 	public sealed class ProcessRunner : IMessageSender, ICloneable, IDisposable
 	{
