@@ -120,6 +120,9 @@ namespace AsParallel
 		/// <param name="message">Output message to be formatted and set.</param>
 		void IMessageSender.SendOutputMessage(string message)
 		{
+			if (disposed)
+				throw new ObjectDisposedException(nameof(ProcessRunner));
+
 			messageFormatter.AddToOutput(message);
 
 			RaiseOutputChanged(messageFormatter.Output);
@@ -132,6 +135,9 @@ namespace AsParallel
 		/// <param name="message">Error message to be formatted and set.</param>
 		void IMessageSender.SendErrorMessage(string message)
 		{
+			if (disposed)
+				throw new ObjectDisposedException(nameof(ProcessRunner));
+
 			messageFormatter.AddToError(message);
 
 			RaiseErrorChanged(messageFormatter.Error);
@@ -144,6 +150,9 @@ namespace AsParallel
 		/// <returns>Cloned instance of the <see cref="ProcessRunner"/>.</returns>
 		public ProcessRunner Clone()
 		{
+			if (disposed)
+				throw new ObjectDisposedException(nameof(ProcessRunner));
+
 			return new ProcessRunner(processCreator.Clone(), (IMessageFormatter)messageFormatter.Clone());
 		}
 

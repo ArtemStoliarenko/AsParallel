@@ -107,6 +107,9 @@ namespace AsParallel
 		/// <returns>Cloned instance of <see cref="ProcessCreator"/></returns>
 		public ProcessCreator Clone()
 		{
+			if (disposed)
+				throw new ObjectDisposedException(nameof(ProcessCreator));
+
 			return new ProcessCreator(Filename, Arguments, ShowWindow);
 		}
 
