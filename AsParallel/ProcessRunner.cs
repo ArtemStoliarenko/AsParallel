@@ -93,16 +93,23 @@ namespace AsParallel
 					var concurrentDataReceiver = messageFormatter is NoMessagesMessageFormatter ? null : new ConcurrentDataReceiver(this);
 					var processCollection = processCreator.CreateProcesses(concurrentDataReceiver);
 					var tasks = processCollection.Select(RunProcess);
-					CurrentTask = Task.WhenAll(tasks)
-						.ContinueWith(task => messageFormatter.GetRunResults());
+					var whenAllTask = Task.WhenAll(tasks);
 
-					if (concurrentDataReceiver != null)
+					if (concurrentDataReceiver == null)
+					{
+						CurrentTask = whenAllTask.ContinueWith(task => messageFormatter.GetRunResults());
+					}
 					{
 						var ctrCancellationToken = new CancellationTokenSource();
 						var outputDataReceiverTask = concurrentDataReceiver.Run(ctrCancellationToken.Token);
-
-						CurrentTask.ContinueWith(task => ctrCancellationToken.Cancel());
 						outputDataReceiverTask.ContinueWith(task => ctrCancellationToken.Dispose());
+
+						CurrentTask = whenAllTask.ContinueWith(task =>
+						{
+							ctrCancellationToken.Cancel();
+							outputDataReceiverTask.Wait();
+							return messageFormatter.GetRunResults();
+						});
 					}
 
 					return CurrentTask;
