@@ -17,8 +17,6 @@ namespace AsParallel
 
 		private readonly IMessageFormatter messageFormatter;
 
-		private readonly object locker = new object();
-
 		private bool disposed = false;
 
 		/// <summary>
@@ -84,42 +82,69 @@ namespace AsParallel
 			if (disposed)
 				throw new ObjectDisposedException(nameof(ProcessRunner));
 
-			lock (locker)
+			if (CurrentTask == null || CurrentTask.IsCompleted)
 			{
-				if (CurrentTask == null || CurrentTask.IsCompleted)
+				messageFormatter.Clear();
+
+				bool retrieveOutput = !(messageFormatter is NoMessagesMessageFormatter);
+				var concurrentDataReceiver = retrieveOutput ? new ConcurrentDataReceiver(this) : null;
+				var processCollection = processCreator.CreateProcesses(concurrentDataReceiver);
+				var tasks = processCollection.Select(process => RunProcess(process, retrieveOutput));
+				var whenAllTask = Task.WhenAll(tasks);
+
+				if (concurrentDataReceiver == null)
 				{
-					messageFormatter.Clear();
-
-					bool retrieveOutput = !(messageFormatter is NoMessagesMessageFormatter);
-					var concurrentDataReceiver = retrieveOutput ? new ConcurrentDataReceiver(this) : null;
-					var processCollection = processCreator.CreateProcesses(concurrentDataReceiver);
-					var tasks = processCollection.Select(process => RunProcess(process, retrieveOutput));
-					var whenAllTask = Task.WhenAll(tasks);
-
-					if (concurrentDataReceiver == null)
-					{
-						CurrentTask = whenAllTask.ContinueWith(task => messageFormatter.GetRunResults());
-					}
-					else
-					{
-						var ctrCancellationToken = new CancellationTokenSource();
-						var outputDataReceiverTask = concurrentDataReceiver.Run(ctrCancellationToken.Token);
-						outputDataReceiverTask.ContinueWith(task => ctrCancellationToken.Dispose());
-
-						CurrentTask = whenAllTask.ContinueWith(task =>
-						{
-							ctrCancellationToken.Cancel();
-							outputDataReceiverTask.Wait();
-							return messageFormatter.GetRunResults();
-						});
-					}
-
-					return CurrentTask;
+					CurrentTask = whenAllTask.ContinueWith(task => messageFormatter.GetRunResults());
 				}
 				else
 				{
-					throw new InvalidOperationException(nameof(ProcessRunner));
+					var ctrCancellationToken = new CancellationTokenSource();
+					var outputDataReceiverTask = concurrentDataReceiver.Run(ctrCancellationToken.Token);
+					outputDataReceiverTask.ContinueWith(task => ctrCancellationToken.Dispose());
+
+					CurrentTask = whenAllTask.ContinueWith(task =>
+					{
+						ctrCancellationToken.Cancel();
+						outputDataReceiverTask.Wait();
+						return messageFormatter.GetRunResults();
+					});
 				}
+
+				return CurrentTask;
+			}
+			else
+			{
+				throw new InvalidOperationException(nameof(ProcessRunner));
+			}
+		}
+
+		/// <summary>
+		/// Immediately stops all running processes operation.
+		/// </summary>
+		public bool Stop()
+		{
+			try
+			{
+				if (disposed)
+					throw new ObjectDisposedException(nameof(ProcessRunner));
+
+				if (!CurrentTask.IsCompleted)
+				{
+					processCreator.KillProcesses();
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			catch (ObjectDisposedException)
+			{
+				throw;
+			}
+			catch (Exception)
+			{
+				return false;
 			}
 		}
 

@@ -78,6 +78,17 @@ namespace AsParallel
 			return new ReadOnlyCollection<Process>(processList);
 		}
 
+		/// <summary>
+		/// Immediately kills all started pricesses.
+		/// </summary>
+		public void KillProcesses()
+		{
+			if (disposed)
+				throw new ObjectDisposedException(nameof(ProcessCreator));
+
+			processList.ForEach(process => process.Kill());
+		}
+
 		private Process CreateProcess(string arguments, ConcurrentDataReceiver concurrentDataReceiver)
 		{
 			var process = new Process();
