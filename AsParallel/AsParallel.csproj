@@ -5,11 +5,12 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>astolyarenko</Authors>
     <Company />
-    <Description>Simple .NET Standard library for running multiple instances of one process and unifiying the output</Description>
-    <PackageLicenseUrl>https://github.com/ArtemStolyarenko/AsParallel/blob/master/LICENSE</PackageLicenseUrl>
-    <RepositoryUrl>https://github.com/ArtemStolyarenko/AsParallel</RepositoryUrl>
+    <Description>Simple .NET Standard library for running multiple instances of one process and unifying the output</Description>
+    <PackageLicenseUrl>https://github.com/ArtemStoliarenko/AsParallel/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/ArtemStoliarenko/AsParallel</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>process,.net standard,AsParallel</PackageTags>
+    <PackageTags>parallel,process,.net standard,AsParallel</PackageTags>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
 </Project>
