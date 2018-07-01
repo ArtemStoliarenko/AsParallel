@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>astolyarenko</Authors>
+    <Company />
+    <Description>Simple .NET Standard library for running multiple instances of one process and unifiying the output</Description>
+    <PackageLicenseUrl>https://github.com/ArtemStolyarenko/AsParallel/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/ArtemStolyarenko/AsParallel</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>process,.net standard,AsParallel</PackageTags>
+  </PropertyGroup>
+
+</Project>
