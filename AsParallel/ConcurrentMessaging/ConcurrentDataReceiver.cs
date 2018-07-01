@@ -29,12 +29,24 @@ namespace AsParallel.ConcurrentMessaging
 
 		public void AddToError(object sender, DataReceivedEventArgs e)
 		{
-			messageQueue.Enqueue(new ProcessMessage(MessageType.Error, e.Data));
+			try
+			{
+				messageQueue.Enqueue(new ProcessMessage(MessageType.Error, e.Data));
+			}
+			catch (Exception)
+			{
+			}
 		}
 
 		public void AddToOutput(object sender, DataReceivedEventArgs e)
 		{
-			messageQueue.Enqueue(new ProcessMessage(MessageType.Standard, e.Data));
+			try
+			{
+				messageQueue.Enqueue(new ProcessMessage(MessageType.Standard, e.Data));
+			}
+			catch (Exception)
+			{
+			}
 		}
 
 		private void ProcessQueue(CancellationToken cancellationToken)

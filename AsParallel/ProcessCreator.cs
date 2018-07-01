@@ -69,31 +69,32 @@ namespace AsParallel
 			DisposeProcesses();
 			processList.Clear();
 
-			var processWindowStyle = ShowWindow ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
 			foreach (string arguments in Arguments)
 			{
-				var process = CreateProcess(arguments, processWindowStyle, concurrentDataReceiver);
+				var process = CreateProcess(arguments, concurrentDataReceiver);
 				processList.Add(process);
 			}
 
 			return new ReadOnlyCollection<Process>(processList);
 		}
 
-		private Process CreateProcess(string arguments, ProcessWindowStyle processWindowStyle, ConcurrentDataReceiver concurrentDataReceiver)
+		private Process CreateProcess(string arguments, ConcurrentDataReceiver concurrentDataReceiver)
 		{
 			var process = new Process();
 
 			process.StartInfo.FileName = Filename;
 			process.StartInfo.Arguments = arguments;
 			process.StartInfo.UseShellExecute = false;
-			process.StartInfo.WindowStyle = processWindowStyle;
+			process.StartInfo.WindowStyle = ShowWindow ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
+			process.StartInfo.CreateNoWindow = !ShowWindow;
 
 			if (concurrentDataReceiver != null)
 			{
-				process.StartInfo.RedirectStandardOutput = true;
-				process.StartInfo.RedirectStandardError = true;
 				process.OutputDataReceived += concurrentDataReceiver.AddToOutput;
 				process.ErrorDataReceived += concurrentDataReceiver.AddToError;
+
+				process.StartInfo.RedirectStandardOutput = true;
+				process.StartInfo.RedirectStandardError = true;
 			}
 
 			process.EnableRaisingEvents = true;

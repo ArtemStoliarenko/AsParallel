@@ -90,15 +90,17 @@ namespace AsParallel
 				{
 					messageFormatter.Clear();
 
-					var concurrentDataReceiver = messageFormatter is NoMessagesMessageFormatter ? null : new ConcurrentDataReceiver(this);
+					bool retrieveOutput = !(messageFormatter is NoMessagesMessageFormatter);
+					var concurrentDataReceiver = retrieveOutput ? new ConcurrentDataReceiver(this) : null;
 					var processCollection = processCreator.CreateProcesses(concurrentDataReceiver);
-					var tasks = processCollection.Select(RunProcess);
+					var tasks = processCollection.Select(process => RunProcess(process, retrieveOutput));
 					var whenAllTask = Task.WhenAll(tasks);
 
 					if (concurrentDataReceiver == null)
 					{
 						CurrentTask = whenAllTask.ContinueWith(task => messageFormatter.GetRunResults());
 					}
+					else
 					{
 						var ctrCancellationToken = new CancellationTokenSource();
 						var outputDataReceiverTask = concurrentDataReceiver.Run(ctrCancellationToken.Token);
@@ -187,7 +189,7 @@ namespace AsParallel
 
 		private void RaiseCombinedOutputChanged(string message) => CombinedOutputChanged?.Invoke(this, message);
 
-		private Task RunProcess(Process process)
+		private Task RunProcess(Process process, bool redirectOutput)
 		{
 			var tcs = new TaskCompletionSource<bool>();
 
@@ -196,7 +198,13 @@ namespace AsParallel
 				tcs.TrySetResult(true);
 				process.Dispose();
 			};
+
 			process.Start();
+			if (redirectOutput)
+			{
+				process.BeginOutputReadLine();
+				process.BeginErrorReadLine();
+			}
 
 			return tcs.Task;
 		}
