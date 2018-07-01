@@ -1,9 +1,9 @@
-﻿using AsParallel.ConcurrentMessaging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using AsParallel.ConcurrentMessaging;
 
 namespace AsParallel
 {
@@ -79,7 +79,7 @@ namespace AsParallel
 		}
 
 		/// <summary>
-		/// Immediately kills all started pricesses.
+		/// Immediately terminates all started processes.
 		/// </summary>
 		public void KillProcesses()
 		{
@@ -128,7 +128,7 @@ namespace AsParallel
 		/// <summary>
 		/// Clones the current instance of <see cref="ProcessCreator"/>.
 		/// </summary>
-		/// <returns>Cloned instance of <see cref="ProcessCreator"/></returns>
+		/// <returns>Cloned instance of <see cref="ProcessCreator"/>.</returns>
 		object ICloneable.Clone() => Clone();
 
 		/// <summary>

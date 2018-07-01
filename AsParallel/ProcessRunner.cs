@@ -1,10 +1,10 @@
-﻿using AsParallel.ConcurrentMessaging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AsParallel.ConcurrentMessaging;
 
 namespace AsParallel
 {
@@ -60,7 +60,7 @@ namespace AsParallel
 		/// <param name="filename">Filename of the executable to be run.</param>
 		/// <param name="arguments">Argument to launch executables with.</param>
 		/// <param name="showWindow">True if a new window should be created for every process instance; otherwise, false.</param>
-		/// <param name="messageFormatter"><see cref="IMessageFormatter"/> instance which defines output format. Default is <see cref="AppendLineMessageFormatter"/>.</param>
+		/// <param name="messageFormatter"><see cref="IMessageFormatter"/> instance which defines output format, default is <see cref="NoMessagesMessageFormatter"/>.</param>
 		public ProcessRunner(string filename, IList<string> arguments, bool showWindow = false, IMessageFormatter messageFormatter = null)
 		{
 			this.processCreator = new ProcessCreator(filename, arguments, showWindow);
@@ -119,7 +119,7 @@ namespace AsParallel
 		}
 
 		/// <summary>
-		/// Immediately stops all running processes operation.
+		/// Immediately terminates all running processes.
 		/// </summary>
 		public bool Stop()
 		{
@@ -149,7 +149,7 @@ namespace AsParallel
 		}
 
 		/// <summary>
-		/// Formats output message and raised events related.
+		/// Formats output message and raises related events.
 		/// </summary>
 		/// <param name="message">Output message to be formatted and set.</param>
 		void IMessageSender.SendOutputMessage(string message)
@@ -164,7 +164,7 @@ namespace AsParallel
 		}
 
 		/// <summary>
-		/// Formats error message and raised events related.
+		/// Formats error message and raises related events.
 		/// </summary>
 		/// <param name="message">Error message to be formatted and set.</param>
 		void IMessageSender.SendErrorMessage(string message)
