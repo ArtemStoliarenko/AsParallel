@@ -59,5 +59,11 @@ namespace AsParallel
 			errorStringBuilder.Clear();
 			combinedStringBuilder.Clear();
 		}
+
+		/// <summary>
+		/// Creates new instance of <see cref="AppendLineMessageFormatter"/> without already processed messages.
+		/// </summary>
+		/// <returns>New instance of <see cref="AppendLineMessageFormatter"/> without already processed messages.</returns>
+		public IMessageFormatter GetCopy() => new AppendLineMessageFormatter();
 	}
 }

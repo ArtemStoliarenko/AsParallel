@@ -187,7 +187,7 @@ namespace AsParallel
 			if (disposed)
 				throw new ObjectDisposedException(nameof(ProcessRunner));
 
-			return new ProcessRunner(processCreator.Clone(), (IMessageFormatter)messageFormatter.Clone());
+			return new ProcessRunner(processCreator.Clone(), messageFormatter.GetCopy());
 		}
 
 		/// <summary>

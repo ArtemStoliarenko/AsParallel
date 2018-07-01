@@ -41,5 +41,11 @@ namespace AsParallel
 		/// Clears all messages.
 		/// </summary>
 		void Clear();
+
+		/// <summary>
+		/// Creates new <see cref="IMessageFormatter"/> of the same type, but without already processed messages.
+		/// </summary>
+		/// <returns>New instance of <see cref="IMessageFormatter"/> of the same type, but without already processed messages.</returns>
+		IMessageFormatter GetCopy();
 	}
 }
