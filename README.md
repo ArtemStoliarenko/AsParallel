@@ -1,2 +1,2 @@
 # AsParallel
-Simple .NET Standard library for running multiple instances of one process and unifying the output
+.NET Standard library for running multiple instances of one process and unifying the output
